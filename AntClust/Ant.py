@@ -24,6 +24,9 @@ class Ant:
         # age of the ant, updated during a change in acceptance threshold
         self.age = 0
 
+        # stability, decreased every time a labeled ant loses its label
+        self.stability = 1
+
         # estimators of the max and mean similarity observed during meetings
         # sim_mean is computed via sim_sum/age
         self.sim_max = 0
@@ -56,6 +59,18 @@ class Ant:
         # release lock
         self.lock.release()
 
+    def reset(self):
+        self.lock.acquire()
+        self.label = -1
+        self.template = 0
+        self.m = 0
+        self.m_p = 0
+        self.age = 0
+        self.stability = 1
+        self.sim_max = 0
+        self.sim_sum = 0
+        self.lock.release()
+      
     # -----------------
     #       getter
     # -----------------
@@ -76,6 +91,18 @@ class Ant:
         value = self.m_p
         self.lock.release()
         return value
+    
+    def get_age(self):
+        self.lock.acquire()
+        value = self.age
+        self.lock.release()
+        return value
+    
+    def get_stability(self):
+        self.lock.acquire()
+        value = self.stability
+        self.lock.release()
+        return value
 
     # -----------------
     #      setter
@@ -93,4 +120,14 @@ class Ant:
     def set_m_p(self, m_p):
         self.lock.acquire()
         self.m_p = m_p
+        self.lock.release()
+
+    def set_age(self,age):
+        self.lock.acquire()
+        self.age = age
+        self.lock.release()
+    
+    def set_stability(self,stability):
+        self.lock.acquire()
+        self.stability = stability
         self.lock.release()

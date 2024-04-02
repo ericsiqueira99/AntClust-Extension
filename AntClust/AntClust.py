@@ -45,7 +45,10 @@ class AntClust:
                  betta_template_init_meetings=0.5,
                  nest_shrink_prop=0.2,
                  nest_removal_prop=0.3,
-                 print_status=True):
+                 print_status=True,
+                 dropout = False,
+                 visualization=False,
+                 dynamic_template_adaptation=False):
         """
         dataset: the data set as N dimensional array or list
 
@@ -102,6 +105,20 @@ class AntClust:
         # store computed similarity's
         self.store_computed_similaritys = store_computed_similaritys
         self.saved_similaritys = {}
+
+        # dropout: similar to the idea in machine learning, deactivate some ants during the process to make it more robust
+        self.dropout = dropout
+        self.dropout_prob = 0.3
+
+        # visualization
+        self.visualization = visualization
+        self.cluster_evolution = [] 
+        self.rule_applied = []
+
+        # dynamic template adaptation: apply a sigmoid to ant's template based on age to encourage ants to meet be more acceptable in 
+        # younger age 
+        self.dynamic_template_adaptation = dynamic_template_adaptation
+
 
     def set_log_level(self, loglevel):
         """
@@ -194,9 +211,16 @@ class AntClust:
         # before or after the acceptance check below?
         ant_i.update_template(similarity)
         ant_j.update_template(similarity)
-
+        ant_i_template = ant_i.template
+        ant_j_template = ant_j.template
         # check the similarity against ants templates and return acceptance
-        if (similarity > ant_i.template) and (similarity > ant_j.template):
+        
+        # if dynamic template adaptation is set to true, younger ants will have reduced template
+        if self.dynamic_template_adaptation:
+            ant_j_template = ant_j_template * self.sigmoid(ant_i.get_age())
+            ant_i_template = ant_j_template * self.sigmoid(ant_j.get_age())
+
+        if (similarity > ant_i_template) and (similarity > ant_j_template):
             return True
         return False
 
@@ -211,6 +235,15 @@ class AntClust:
         number_of_ants = len(self.ants)
         iterations_left = self.meeting_iterations
         while iterations_left:
+            if self.dropout and rng.random() >= self.dropout_prob and iterations_left <= self.meeting_iterations//2:
+                drop_count = rng.randint(number_of_ants//8, number_of_ants//6)
+                drop_indices = [rng.randint(0, number_of_ants - 1) for _ in range(drop_count)]
+                for index in drop_indices:
+                    # drop ant
+                    self.ants[index].reset()
+                if self.print_status:
+                    print("----DROPOUT----")
+                    print(f"Ants reseted: {drop_indices}")
             # print meetings?
             if self.print_status:
                 if iterations_left % (int(self.meeting_iterations) * 0.1) == 0:
@@ -225,7 +258,13 @@ class AntClust:
             # apply rules to ants
             ant_i = self.ants[ant0_index]
             ant_j = self.ants[ant1_index]
-            self.rules.apply_rules(ant_i, ant_j, self)
+            if self.visualization:
+                rule = self.rules.apply_rules(ant_i, ant_j, self)
+                self.rule_applied.append(rule)
+                self.__cluster_label_assignment()
+                self.cluster_evolution.append(self.get_clusters())
+            else:
+                self.rules.apply_rules(ant_i, ant_j, self)
 
     def __nest_shrink(self):
         """
@@ -367,3 +406,4 @@ class AntClust:
                                       len(self.ants))
         # run phases
         self.__find_clusters()
+        return self.cluster_evolution, self.rule_applied

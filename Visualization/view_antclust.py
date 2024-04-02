@@ -8,10 +8,11 @@ from sklearn.metrics import adjusted_rand_score, rand_score
 import matplotlib.pyplot as plt
 
 
-def visualize_meetings(cluster_evolution, rule_applied, labels):
-    ari_evolution = [adjusted_rand_score(labels, cluster) for cluster in cluster_evolution]
-    meetings = range(1,len(ari_evolution)+1)
-    data = {'Meeting number': meetings, 'Rule applied': rule_applied, 'ARI': ari_evolution}
+def visualize_meetings(cluster_evolution, rule_applied, labels=None):
+    if labels:
+        cluster_evolution = [adjusted_rand_score(labels, cluster) for cluster in cluster_evolution]
+    meetings = range(1,len(cluster_evolution)+1)
+    data = {'Meeting number': meetings, 'Rule applied': rule_applied, 'ARI': cluster_evolution}
     df = pd.DataFrame(data)
     # Plotting
     plt.figure(figsize=(8, 6))
@@ -35,10 +36,11 @@ def visualize_meetings(cluster_evolution, rule_applied, labels):
     plt.grid(True)
     plt.show()
 
-def visualize_meetings_subplots(cluster_evolution, rule_applied, labels):
-    ari_evolution = [adjusted_rand_score(labels, cluster) for cluster in cluster_evolution]
-    meetings = range(1,len(ari_evolution)+1)
-    data = {'Meeting number': meetings, 'Rule applied': rule_applied, 'ARI': ari_evolution}
+def visualize_meetings_subplots(cluster_evolution, rule_applied, labels=None):
+    if labels:
+        cluster_evolution = [adjusted_rand_score(labels, cluster) for cluster in cluster_evolution]
+    meetings = range(1,len(cluster_evolution)+1)
+    data = {'Meeting number': meetings, 'Rule applied': rule_applied, 'ARI': cluster_evolution}
     df = pd.DataFrame(data)
     # Plotting
     plt.figure(figsize=(16, 8))
