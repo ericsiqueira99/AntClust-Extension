@@ -12,7 +12,7 @@ class Ant:
         self.label = -1
 
         # the template of this Ant
-        self.template = np.random.normal(0.5, 0.2)
+        self.template = np.random.normal(0.5, 0.4)
 
         # age of the ant, updated during a change in acceptance threshold
         self.age = 0
