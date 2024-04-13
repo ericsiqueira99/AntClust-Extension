@@ -16,6 +16,7 @@ from PIL import Image
 from sklearn.metrics import jaccard_score
 import torch
 from fastdtw import fastdtw
+import cv2 as cv
 
 
 

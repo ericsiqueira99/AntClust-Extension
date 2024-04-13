@@ -29,7 +29,7 @@ def visualize_meetings(cluster_evolution, rule_applied, labels=None):
     # Add labels and legend
     plt.xlabel('Meeting Number')
     plt.ylabel('ARI')
-    plt.title('AntClust Evolution')
+    plt.title('AntClust Rule applied per ARI')
     plt.legend()
 
     # Show plot
@@ -44,14 +44,15 @@ def visualize_meetings_subplots(cluster_evolution, rule_applied, labels=None):
     df = pd.DataFrame(data)
     # Plotting
     plt.figure(figsize=(16, 8))
-
     # Get unique rules and assign colors
     unique_rules = df['Rule applied'].unique()
+    unique_rules.sort()
+
     colors = cycle(['blue', 'green', 'red', 'orange', 'purple', 'brown'])
 
     # Plotting subplots for each rule
     fig, axs = plt.subplots(len(unique_rules), 1, figsize=(8, 6), sharex=True)
-
+    fig.suptitle('AntClust Rule applied per ARI')
     for i, rule in enumerate(unique_rules):
         rule_data = df[df['Rule applied'] == rule]
         axs[i].scatter(rule_data['Meeting number'], rule_data['ARI'], color=next(colors), alpha=0.5)

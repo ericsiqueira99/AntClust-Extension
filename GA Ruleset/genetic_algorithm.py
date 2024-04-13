@@ -5,7 +5,9 @@ import numpy as np
 from itertools import product    
 sys.path.append('../AntClust')
 
-# Define a defaultdict with a list as the default value
+"""
+Definition of GA algorithm for ruleset optmization
+"""
 class GA:    
     RULESETS = {"R1_condition": ["R1"],
                 "R2_condition": ["R2"],

@@ -13,7 +13,7 @@ val = []
 x = 0.5
 
 for i in range(100):
-    val.append(x*scaled_sigmoid(i, 0, 1.2))
+    val.append(x*sigmoid(i))
 
 plt.plot(range(100), val)
 plt.xlabel('Index')

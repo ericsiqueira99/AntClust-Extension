@@ -1,7 +1,11 @@
 import sys
 sys.path.append('../AntClust')
 import rules
-
+"""
+Class defining a dynamic rule structure to be used by GA approach.
+This faciliates the creation of new rules, as is only necessary to instaciante the class
+with a list of rule names (which match the function name of repsective rule).
+"""
 class dynamic_rules(rules.rule_interface):
     def __init__(self, rule_list):
         # list of all created labels
@@ -169,7 +173,6 @@ class dynamic_rules(rules.rule_interface):
             ant_j.set_m_p(self.decrease_estimator_variable(ant_j.get_m_p()))
 
             # The youngest ant x (x=i, x=j) loses its label
-            # m_p is the estimator how well accepted the ant is inside her nest
             age_i = ant_i.get_age()
             age_j = ant_j.get_age()
 
@@ -234,7 +237,6 @@ class dynamic_rules(rules.rule_interface):
             ant_j.set_m_p(self.decrease_estimator_variable(ant_j.get_m_p()))
 
             # The oldest ant x (x=i, x=j) loses its label
-            # m_p is the estimator how well accepted the ant is inside her nest
             age_i = ant_i.get_age()
             age_j = ant_j.get_age()
 
@@ -279,7 +281,7 @@ class dynamic_rules(rules.rule_interface):
             ant_i.set_m(self.decrease_estimator_variable(ant_i.get_m()))
             ant_j.set_m(self.decrease_estimator_variable(ant_j.get_m()))
 
-            # M:
+            # age:
             if ant_i.get_age() < ant_j.get_age():
                 # ant_i is inside the smaller cluster and will be absorbed
                 ant_i.set_label(ant_j.get_label())
@@ -288,7 +290,7 @@ class dynamic_rules(rules.rule_interface):
                 # ant_j is inside the smaller cluster and will be absorbed
                 ant_j.set_label(ant_i.get_label())
                 ant_j.set_stability(self.decrease_estimator_variable(ant_j.get_stability()))
-            return "R5_OLD"
+            return "R5_YOUNG"
 
     # Decrease M estimator and assign older ant with to the other ant's cluster
     def R5_OLD(self,ant_i, ant_j, AntClust,acceptance):
@@ -297,7 +299,7 @@ class dynamic_rules(rules.rule_interface):
             ant_i.set_m(self.decrease_estimator_variable(ant_i.get_m()))
             ant_j.set_m(self.decrease_estimator_variable(ant_j.get_m()))
 
-            # M:
+            # age:
             if ant_i.get_age() > ant_j.get_age():
                 # ant_i is inside the smaller cluster and will be absorbed
                 ant_i.set_label(ant_j.get_label())

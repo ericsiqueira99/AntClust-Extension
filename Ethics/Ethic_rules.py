@@ -25,34 +25,6 @@ class rule_interface:
         """
         raise NotImplementedError
 
-
-# standard rule set as in Labroche et.al
-# In the very beginning all ants are initialized
-# with no label - i.e. label ← 0. Thus when two ants meet in
-# the beginning, mostly R1 will be applied. This will create a
-# lot of little clusters containing only two ants. Once more and
-# more ants have got a label assigned trough R1, it becomes
-# more likely that R2 is applied and thus the initial formed
-# clusters begin to grow. If two ants belong to the same cluster
-# there are two cases: they accept each other or they do not.
-# In the first case R3 will be applied which will increase the
-# cluster size estimator M and the colony integrity estimator
-# M + which makes sense since it seems that the colony is quite
-# big if two randomly chosen ants belong to the same colony,
-# accepting each other means that the colony is still in a good
-# integrity state. In the second case R4 will be applied as the
-# colony mates do not accept each other. This will increase the
-# colony size estimator since the colony must be relatively big
-# if two randomly chosen ants belong to the same colony and
-# decrease the integrity estimator M + since the two ants did not
-# accept each other but belong to the same colony, suggesting
-# the integration of colony members is relatively low. If two
-# ants meet that do no belong to the same colony but accept
-# each other then R5 is applied which will, over time, lead to
-# the ability that smaller colonies - where many of these are
-# initially formed in the beginning via R1 - getting integrated
-# into the bigger colony’s. For all other cases the default rule is
-# applied and thus nothing ha
 class ethical_rules(rule_interface):
     def __init__(self):
         # list of all created labels
