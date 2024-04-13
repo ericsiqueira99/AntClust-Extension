@@ -1,7 +1,7 @@
 # ANTCLUST EXTENSION
 
 This project is a extension of the work done by Winfried Gero Oed and Parisa Memarmoshrefi
-[0], whihc is a Python build of ANTCLUST, a clustering algorithm based on the chemical recognition system of ants which was developed by Nicolas Labroche et al. [1]. The idea is to explore the interface and apply it to more data types, as well as test the implementation of bio-inspired methods with the goal of improve AntClust performance.
+[0], a Python build of ANTCLUST, a clustering algorithm based on the chemical recognition system of ants which was developed by Nicolas Labroche et al. [1]. The idea is to explore the interface and apply it to more data types, as well as test the implementation of bio-inspired methods with the goal of improve AntClust performance.
 
 # New Data types
 Developed new similarity functions for the clustering of different data types (categorical, numerical, time series, spatial, textual data) and tested it against classical clustering methods.
